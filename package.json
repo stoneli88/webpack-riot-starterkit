@@ -1,0 +1,28 @@
+{
+  "devDependencies": {
+    "autoprefixer": "^6.3.6",
+    "babel": "^4.7.16",
+    "babel-loader": "^4.3.0",
+    "css-loader": "^0.23.1",
+    "image-webpack-loader": "^1.8.0",
+    "postcss-assets": "^4.1.0",
+    "postcss-loader": "^0.9.1",
+    "precss": "^1.4.0",
+    "riot": "^2.4.0",
+    "riotjs-loader": "^3.0.0",
+    "style-loader": "^0.13.1",
+    "webpack": "2.1.0-beta.7",
+    "webpack-dev-server": "^1.14.1"
+  },
+  "engines": {
+    "node": ">=0.12"
+  },
+  "private": true,
+  "scripts": {
+    "build": "webpack --progress --color --verbose",
+    "start": "webpack-dev-server --progress --color"
+  },
+  "dependencies": {
+    "jquery": "^2.2.3"
+  }
+}
