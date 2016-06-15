@@ -1,12 +1,29 @@
 var webpack = require("webpack");
 var precss = require('precss');
 var autoprefixer = require('autoprefixer');
-var assets  = require('postcss-assets');
+var assets = require('postcss-assets');
+var UglifyJsPlugin = webpack.optimize.UglifyJsPlugin;
+
+// 区分开发或是生产环境
+var env = process.env.WEBPACK_ENV;
+var plugins = [
+  new webpack.optimize.CommonsChunkPlugin({
+    name: 'commons'
+  }),
+  new webpack.ProvidePlugin({
+    riot: 'riot'
+  })
+];
+
+if(env === 'build') {
+  plugins.push(new UglifyJsPlugin({ minimize: true }));
+}
 
 module.exports = {
   cache: true,
   entry: {
-    guide: './app/scripts/guide.js'
+    guide: './app/scripts/guide.js',
+    rxGitQuery: './app/scripts/rx-GitQuery.js'
   },
   output: {
     path: './public/assets/scripts',
@@ -15,14 +32,7 @@ module.exports = {
   },
   debug: true,
   devtool: "inline-source-map",
-  plugins: [
-    new webpack.optimize.CommonsChunkPlugin({
-      name: 'commons'
-    }),
-    new webpack.ProvidePlugin({
-      riot: 'riot'
-    })
-  ],
+  plugins: plugins,
   module: {
     preLoaders: [
       { test: /\.tag$/, exclude: /node_modules/, loader: 'riotjs-loader', query: { type: 'none' } }
@@ -37,9 +47,8 @@ module.exports = {
       },
       {
         test: /\.js$|\.tag$/,
-        exclude: /node_modules/,
-        loaders: 'babel-loader',
-        query: {modules: 'common'}
+        exclude: /(node_modules|bower_components)/,
+        loaders: 'babel-loader'
       },
       {
         test: /\.less$/,
@@ -57,7 +66,7 @@ module.exports = {
     ]
   },
   resolve: {
-    extensions: ['','.js','.json'],
+    extensions: ['', '.js', '.json'],
     alias: {
       '$': '/jquery/dist/jquery',
       'jQuery': '/jquery/dist/jquery'
